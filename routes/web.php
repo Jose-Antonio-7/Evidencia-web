@@ -32,8 +32,8 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
-Route::put('ordenes/{id}', [OrdenController::class, 'update'])->name('ordenes.update');
+//agregado softdeletes
+Route::get('/ordenes/archive', [OrdenController::class, 'archive']);
 
 //Rutas 
 Route::group(['middleware' => ['auth']], function(){
@@ -41,8 +41,13 @@ Route::group(['middleware' => ['auth']], function(){
     Route::resource('usuarios',UsuarioController::class);
     // Route::resource('ordenes',OrdenController::class);
     Route::resource('ordenes',OrdenController::class)->parameters(['ordenes' => 'order']);
+    //agregado softdeletes
+    Route::delete('/ordenes/{order}', [OrdenController::class, 'destroy'])->name('ordenes.destroy')->withTrashed();
+    Route::post('/ordenes/{order}/restore', [OrdenController::class, 'restore'])->name('ordenes.restore')->withTrashed();
 
 });
+
+
 
 
 

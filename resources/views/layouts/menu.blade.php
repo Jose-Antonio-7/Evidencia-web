@@ -11,4 +11,7 @@
     <a class="nav-link" href="/ordenes">
         <i class=" fas fa-truck"></i><span>Ordenes</span>
     </a>
+    <a class="nav-link" href="/ordenes/archive">
+        <i class=" fas fa-box"></i><span>Archivo de ordenes</span>
+    </a>
 </li>

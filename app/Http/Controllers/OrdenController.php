@@ -12,12 +12,18 @@ class OrdenController extends Controller
 {
     function __construct()
     {
-        $this->middleware('permission:ver-orden | crear-orden | editar-orden | borrar-orden', ['only' =>['index']]);
+        $this->middleware('permission:ver-orden|crear-orden|editar-orden|borrar-orden', ['only' =>['index']]);
         $this->middleware('permission:crear-orden', ['only' =>['create','store']]);
         $this->middleware('permission:editar-orden', ['only' =>['edit','update']]);
         $this->middleware('permission:borrar-orden', ['only' =>['destroy']]);
 
 
+    }
+
+    public function archive()
+    {
+        $ordenes = Order::onlyTrashed()->get();
+        return view('ordenes.archive', compact('ordenes'));
     }
     /**
      * Display a listing of the resource.
@@ -123,8 +129,18 @@ class OrdenController extends Controller
      */
     public function destroy(Order $order)
     {
+        if($order->trashed()){
+            $order->forceDelete();
+            return redirect()->to('/ordenes');
+        }
         $order->delete();
     
         return redirect()->route('ordenes.index');
+    }
+
+    public function restore(Order $order)
+    {
+        $order->restore();
+        return redirect()->to('/ordenes');
     }
 }
