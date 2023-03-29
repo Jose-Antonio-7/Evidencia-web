@@ -36,6 +36,13 @@ class OrdenController extends Controller
         return view('ordenes.index',compact('ordenes'));
     }
 
+    // public function search()
+    // {
+    //     $ordenes = Order::paginate(5);
+
+    //     return view('ordenes.search',compact('ordenes'));
+    // }
+
     /**
      * Show the form for creating a new resource.
      *

@@ -43,16 +43,63 @@
                             @foreach ($ordenes as $order)
                                 @if($order->customer_number == $input_text)
                                     <tr>
-                                        <td style="display: none;">{{ $order->id }}</td>                                
-                                        <td>{{ $order->status }}</td>
-                                        <td>{{ $order->direccion }}</td>
-                                        <td>{{ $order->notas }}</td>
-                                        <td><img src ="{{ $order->photo }}" class = "img-fluid"></td>
-                                        <td>{{ $order->customer_number }}</td>
-                                        <td>{{ $order->created_at }}</td>
+                                        @if($order->status == "Delivered")
+                                            <td style="display: none;">{{ $order->id }}</td>                                
+                                            <td>{{ $order->status }}</td>
+                                            <td>{{ $order->direccion }}</td>
+                                            <td>{{ $order->notas }}</td>
+                                            <td><img src ="{{ $order->photo }}" class = "img-fluid"></td>
+                                            <td>{{ $order->customer_number }}</td>
+                                            <td>{{ $order->created_at }}</td>
+                                        @else
+                                            <td style="display: none;">{{ $order->id }}</td>                                
+                                            <td>{{ $order->status }}</td>
+                                            <td>{{ $order->direccion }}</td>
+                                            <td>{{ $order->notas }}</td>
+                                            <td>{{ $order->status }}</td>
+                                            <td>{{ $order->customer_number }}</td>
+                                            <td>{{ $order->created_at }}</td>
+                                        @endif
                                     <tr>
                                 @endif
                             @endforeach
+
+                            @can('editar-orden')
+                            @foreach ($ordenes as $order)
+                                    <tr>
+                                        @if($order->status == "Delivered")
+                                            <td style="display: none;">{{ $order->id }}</td>                                
+                                            <td>{{ $order->status }}</td>
+                                            <td>{{ $order->direccion }}</td>
+                                            <td>{{ $order->notas }}</td>
+                                            <td><img src ="{{ $order->photo }}" class = "img-fluid"></td>
+                                            <td>{{ $order->customer_number }}</td>
+                                            <td>{{ $order->created_at }}</td>
+                                        @else
+                                            <td style="display: none;">{{ $order->id }}</td>                                
+                                            <td>{{ $order->status }}</td>
+                                            <td>{{ $order->direccion }}</td>
+                                            <td>{{ $order->notas }}</td>
+                                            <td>{{ $order->status }}</td>
+                                            <td>{{ $order->customer_number }}</td>
+                                            <td>{{ $order->created_at }}</td>
+                                        @endif
+                            <td>
+                                <form action="{{ route('ordenes.destroy',$order->id) }}" method="POST">                                        
+                                    @can('editar-orden')
+                                        <a class="btn btn-info" href="{{ route('ordenes.edit',$order->id) }}">Editar</a>
+                                    @endcan
+
+                                    @csrf
+                                    @method('DELETE')
+                                    @can('borrar-orden')
+                                        <button type="submit" class="btn btn-danger">Borrar</button>
+                                    @endcan
+                                </form>
+                            </td>
+                                    <tr>
+                            @endforeach
+                            @endcan
                             </tbody>
                         </table>
 
